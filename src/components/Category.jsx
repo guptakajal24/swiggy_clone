@@ -4,37 +4,20 @@ import { FaArrowRight } from "react-icons/fa6";
 
 export default function Category() {
   const [Categories, setCategory] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
 
   const fetchCategory = async () => {
     try {
-      const response = await fetch('/categories.json'); // Adjust path if necessary
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      const response = await fetch('http://localhost:3000/categories'); // Adjust path if necessary
       const data = await response.json();
-      console.log(data); // Log the data to check its structure
       setCategory(data); // Set categories from the fetched data
     } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-      setError(error.message); // Set error state
-    } finally {
-      setLoading(false); // Set loading to false regardless of success or failure
-    }
+      console.log(error);
   };
 
   useEffect(() => {
     fetchCategory();
   }, []);
-
-  if (loading) {
-    return <div>Loading...</div>; // Show loading indicator
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>; // Show error message if fetching fails
-  }
 
   return (
     <div className='max-w-[1200px] mx-auto'>
@@ -50,18 +33,17 @@ export default function Category() {
         </div>
       </div>
       <div className='flex'>
-        {Categories.map((cat, index) => {
-          console.log(cat); // Log the entire category object
-          return (
-            <div className='grow-1' key={index}>
-              <img 
-                src={`https://drive.google.com/uc?export=view&id=${cat.path}/${cat.image}`} 
-                alt={cat.image} 
-              />
-            </div>
-          );
-        })}
+        {
+          Categories.map((cat,index)=>{
+            return (
+              <div className="">
+                  <img src={"http://localhost:3000/images"+cat.name} alt="" />
+              </div>
+            )
+          })
+        }
       </div>
     </div>
   );
+}
 }
